@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>VNCRemoteViewer</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+</head>
+<body>
+
+  <div id="header-container"></div>
+
+  <div id="notification" class="notification">Обнаружены новые клиенты!</div>
+  <div id="loading-indicator"></div>
+
+  <!-- Здесь Jinja подставит JSON-конфиг -->
+  <script id="config-data" type="application/json">{{ config | tojson }}</script>
+
+  <div id="hosts-grid"></div>
+
+  <script type="module">
+    import { init } from "{{ url_for('static', filename='components/events.js') }}";
+    init();
+  </script>
+</body>
+</html>

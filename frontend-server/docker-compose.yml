@@ -1,0 +1,22 @@
+version: '1.0'
+
+services:
+  app:
+    image: vnc-rm-app                 # Название собранного Docker-образа
+    container_name: vnc_rm_app        # Фиксированное имя контейнера
+    restart: unless-stopped           # Автоперезапуск при падении
+    ports:
+      - "5000:5000"  # Пробрасываем порт (host:container)
+#     Основные настройки сервера.
+#    environment:
+#     - FRONTEND_PORT=${FRONTEND_PORT}           # Порт работы app (должен совпадать с ports)
+#     - API_SERVER_ADDR=${API_SERVER_ADDR}
+#     - VIEW_ONLY_PASS=${VIEW_ONLY_PASS}
+#     - TZ=Europe/Moscow            # Часовой пояс
+#     - PYTHONUNBUFFERED=1          # Для немедленного вывода логов Python
+    env_file:       # Рекомендуется использовать .env !
+      - .env
+    volumes:
+      - ./vnc-rm-app/data:/app/data
+# volumes:              # Для постоянного хранения (если нужно)
+#   app-data:

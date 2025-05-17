@@ -1,0 +1,39 @@
+# The API endpoint for registering the agent
+# Example: "192.168.0.1:8080"
+SERVER_IP: "localhost:8080"
+
+# How often (in seconds) the agent will scan the sessions
+# Example: 300 seconds = 5 minutes
+SCAN_INTERVAL: 30
+
+# How often (in seconds) the agent attempts to register after errors
+RETRY_INTERVAL: 60
+
+# The frequency of log rotation.
+# Example: 'S', 'M', 'H', 'D', 'W0'-'W6', 'midnight'
+LOG_WHEN: "D"
+
+# Interval between rotations in units specified in LOG_WHEN
+# Example: LOG_WHEN: 'H' and LOG_INTERVAL: 2 - rotation every 2 hours
+LOG_INTERVAL: 1
+
+# The maximum number of stored log files
+# If this number is exceeded, the oldest logs will be deleted
+LOG_COUNT: 30
+
+VNC:
+  # The default port value of vnc-server
+  # Don't use default vnc ports like 5900
+  VNC_PORT: 5910
+  # The initial port value of  Websockify
+  WEBSOCKIFY_PORT: 6080
+  # Admin password for the all sessions.
+  # Should be less than 9 symbols!
+  ADMIN_PASS: "password"
+  # View-only mode password for the all sessions
+  # Should be less than 9 symbols!
+  VIEW_ONLY_PASS: "password"
+  # Path to vnc-server binaries
+  VNC_BINARY: "/usr/bin/x11vnc"
+  # Path to websockify binaries
+  WEBSOCKIFY_BINARY: "/snap/bin/novnc"

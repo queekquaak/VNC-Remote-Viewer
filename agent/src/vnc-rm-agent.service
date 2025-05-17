@@ -1,0 +1,14 @@
+[Unit]
+Description=VNC Remote Monitor Agent
+After=network.target graphical.target
+
+[Service]
+User=root
+Group=root
+ExecStart=/opt/vnc-rm-agent/venv/bin/python /opt/vnc-rm-agent/__main__.py
+ExecStop=/bin/kill -INT $MAINPID
+WorkingDirectory=/opt/vnc-rm-agent
+Restart=always
+
+[Install]
+WantedBy=graphical.target
