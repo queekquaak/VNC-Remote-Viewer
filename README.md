@@ -74,7 +74,7 @@ sudo docker build -t vnc-rm-app .
 # Подготовьте директорию для монтирования
 sudo mkdir -p /opt/vnc-rm-app/data
 # Скопируйте шаблоны docker-compose и .env в /opt/vnc-rm-app
-sudo cp frontend-server/env /opt/vnc-rm-app/.env
+sudo cp frontend-server/.env /opt/vnc-rm-app
 sudo cp frontend-server/docker-compose.yml /opt/vnc-rm-app
 # Отредактируйте их по своему желанию
 # Перейдите в созданную директорию
