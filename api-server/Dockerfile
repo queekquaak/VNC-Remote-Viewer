@@ -26,6 +26,7 @@ RUN mkdir -p /app/data/log
 # Переменные окружения из config.py с значениями по умолчанию
 ENV PYTHONUNBUFFERED=1 \
     API_SERVER_PORT=8080 \
+    API_AUTH_TOKEN=moneyprintergobrrr \
     METRICS_UPDATE_INTERVAL=60 \
     LOG_WHEN=D \
     LOG_INTERVAL=1 \
