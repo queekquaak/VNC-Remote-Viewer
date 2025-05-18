@@ -1,7 +1,7 @@
 import sys
 from pathlib import Path
 from modules.logger import ServerLogger
-from modules.config import API_SERVER_PORT, METRICS_UPDATE_INTERVAL, LOG_WHEN, LOG_INTERVAL, LOG_COUNT
+from modules.config import API_SERVER_PORT, API_AUTH_TOKEN, METRICS_UPDATE_INTERVAL, LOG_WHEN, LOG_INTERVAL, LOG_COUNT
 from modules.api import (
     ServerRepository,
     ServerManager,
@@ -48,12 +48,14 @@ def main():
         repository = ServerRepository(str(SERVERS_FILE), logger)
         manager = ServerManager(repository, logger.metrics)
         port = int(API_SERVER_PORT)
+        auth_token = str(API_AUTH_TOKEN)
 
         # Запуск сервера
         server = ServerHTTPServer(
             manager=manager,
             metrics=logger.metrics,
             server_address=("", port),
+            auth_token=auth_token,
             RequestHandlerClass=ServerRequestHandler
         )
 
