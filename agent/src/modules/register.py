@@ -13,8 +13,8 @@ class ServerRegister:
             server_api_url: str,
             ip: str,
             username: str,
-            # vnc_port: Optional[int] = None,
-            websockify_port: Optional[int] = None
+            websockify_port: Optional[int] = None,
+            auth_token: Optional[str] = None
     ) -> Optional[Union[Dict, str]]:
         self.logger.info(
             f"Registering to {server_api_url} - "
@@ -28,8 +28,12 @@ class ServerRegister:
             'websockify_port': websockify_port
         }
 
+        headers = {}
+        if auth_token:
+            headers['Authorization'] = f'Bearer {auth_token}'
+
         try:
-            response = requests.post(server_api_url, json=data, timeout=10)
+            response = requests.post(server_api_url, json=data, headers=headers, timeout=10)
             response.raise_for_status()
 
             if not response.text.strip():
@@ -48,7 +52,7 @@ class ServerRegister:
             self.logger.error(f"HTTP error {e.response.status_code}: {e.response.text}")
         except requests.RequestException as e:
             self.logger.error(f"Network error: {str(e)}")
-        except Exception as e:
-            self.logger.exception(f"Unexpected registration error")
+        except Exception:
+            self.logger.exception("Unexpected registration error")
 
         return None
