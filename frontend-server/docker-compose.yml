@@ -6,15 +6,15 @@ services:
     container_name: vnc_rm_app        # Фиксированное имя контейнера
     restart: unless-stopped           # Автоперезапуск при падении
     ports:
-      - "5000:5000"  # Пробрасываем порт (host:container)
+      - "5000:5000"                # Пробрасываем порт (host:container)
 #     Основные настройки сервера.
 #     Рекомендуется использовать .env !
-#    environment:
-#     - FRONTEND_PORT=${FRONTEND_PORT}           # Порт работы app (должен совпадать с ports)
-#     - API_SERVER_ADDR=${API_SERVER_ADDR}
-#     - VIEW_ONLY_PASS=${VIEW_ONLY_PASS}
-#     - TZ=Europe/Moscow            # Часовой пояс
-#     - PYTHONUNBUFFERED=1          # Для немедленного вывода логов Python
+    environment:
+     - FRONTEND_PORT=${FRONTEND_PORT}           # Порт работы app (должен совпадать с ports)
+     - API_SERVER_ADDR=${API_SERVER_ADDR}
+     - VIEW_ONLY_PASS=${VIEW_ONLY_PASS}
+     - TZ=Europe/Moscow            # Часовой пояс
+     - PYTHONUNBUFFERED=1          # Для немедленного вывода логов Python
     volumes:
       - ./vnc-rm-app/data:/app/data
 # volumes:                          # Для постоянного хранения (если нужно)
