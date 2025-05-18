@@ -3,6 +3,9 @@ import os
 # The port of api-server
 API_SERVER_PORT = os.getenv("API_SERVER_PORT", "8080")
 
+# Agent token for validations
+API_AUTH_TOKEN = os.getenv("API_AUTH_TOKEN", "moneyprintergobrrr")
+
 # The interval (in seconds) between metrics updates.
 # Example: 300 seconds = 5 minutes
 METRICS_UPDATE_INTERVAL = os.getenv("METRICS_UPDATE_INTERVAL", "60")
