@@ -2,6 +2,10 @@
 # Example: "192.168.0.1:8080"
 SERVER_IP: "localhost:8080"
 
+# Token for secure validations with API endpoint
+# Generate long random value for yourself and past here
+API_AUTH_TOKEN: "moneyprintergobrrr"
+
 # How often (in seconds) the agent will scan the sessions
 # Example: 300 seconds = 5 minutes
 SCAN_INTERVAL: 30
