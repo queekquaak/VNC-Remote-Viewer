@@ -120,9 +120,10 @@ class ServerManager:
 class ServerRequestHandler(BaseHTTPRequestHandler):
     """Обработчик HTTP-запросов"""
 
-    def __init__(self, manager: ServerManager, metrics: ConnectionMetrics, *args, **kwargs):
+    def __init__(self, manager: ServerManager, metrics: ConnectionMetrics, auth_token, *args, **kwargs):
         self.manager = manager
         self.metrics = metrics
+        self.auth_token = auth_token
         self.logger = manager.logger
         super().__init__(*args, **kwargs)
 
@@ -194,6 +195,12 @@ class ServerRequestHandler(BaseHTTPRequestHandler):
     def do_POST(self) -> None:
         """Обрабатка POST-запросов"""
         try:
+
+            auth_header = self.headers.get("Authorization", "")
+            if not auth_header.startswith("Bearer ") or auth_header.split(" ", 1)[1] != self.auth_token:
+                self._send_response(403, {"error": "Unauthorized"})
+                return
+
             content_length = int(self.headers.get('Content-Length', 0))
             post_data = json.loads(self.rfile.read(content_length))
 
@@ -226,7 +233,7 @@ class ServerRequestHandler(BaseHTTPRequestHandler):
 class ServerHTTPServer(HTTPServer):
     """HTTP сервер с поддержкой метрик и логирования"""
 
-    def __init__(self, manager: ServerManager, metrics: ConnectionMetrics, server_address: tuple, RequestHandlerClass):
+    def __init__(self, manager: ServerManager, metrics: ConnectionMetrics, server_address: tuple, auth_token, RequestHandlerClass):
         """
         Args:
             manager: Экземпляр ServerManager
@@ -236,6 +243,7 @@ class ServerHTTPServer(HTTPServer):
         """
         self.manager = manager
         self.metrics = metrics
+        self.auth_token = auth_token
         self.logger = manager.logger
         super().__init__(server_address, RequestHandlerClass)
 
@@ -245,6 +253,7 @@ class ServerHTTPServer(HTTPServer):
             handler = ServerRequestHandler(
                 manager=self.manager,
                 metrics=self.metrics,
+                auth_token=self.auth_token,
                 request=request,
                 client_address=client_address,
                 server=self
