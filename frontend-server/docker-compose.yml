@@ -15,6 +15,10 @@ services:
      - VIEW_ONLY_PASS=${VIEW_ONLY_PASS}
      - TZ=Europe/Moscow            # Часовой пояс
      - PYTHONUNBUFFERED=1          # Для немедленного вывода логов Python
+#     Опциональные настройки
+#     - VNC_COMPRESSION=9           # Степень сжатия изображения (0-9)
+#     - VNC_TILE_QUALITY=1          # Глубина цвета в режиме просмотра
+#     - VNC_FULLSCREEN_QUALITY=5    # Глубина цвета в режиме управления
     volumes:
       - ./vnc-rm-app/data:/app/data
 # volumes:                          # Для постоянного хранения (если нужно)
