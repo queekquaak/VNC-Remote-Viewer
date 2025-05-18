@@ -25,6 +25,7 @@ class Agent:
         )
 
         self.SERVER_API_URL = self.build_api_url()
+        self.API_AUTH_TOKEN = str(self.config.get("API_AUTH_TOKEN"))
         self.SCAN_INTERVAL = int(self.config.get('SCAN_INTERVAL', 30))
         self.RETRY_INTERVAL = int(self.config.get('RETRY_INTERVAL', 60))
 
@@ -98,7 +99,8 @@ class Agent:
             server_api_url=self.SERVER_API_URL,
             ip=ip,
             username=username,
-            websockify_port=ws_port
+            websockify_port=ws_port,
+            auth_token=self.API_AUTH_TOKEN
         )
 
         if result is None:
