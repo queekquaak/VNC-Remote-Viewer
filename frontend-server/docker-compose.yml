@@ -2,8 +2,8 @@ version: '1.0'
 
 services:
   app:
-    image: vnc-rm-app                 # Название собранного Docker-образа
-    container_name: vnc_rm_app        # Фиксированное имя контейнера
+    image: queekquaak/vnc-rm-app:1.0  # Название собранного Docker-образа
+    container_name: vnc-rm-app        # Фиксированное имя контейнера
     restart: unless-stopped           # Автоперезапуск при падении
     ports:
       - "5000:5000"                # Пробрасываем порт (host:container)
