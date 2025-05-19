@@ -81,7 +81,7 @@ mkdir -p /opt/vnc-rm-app/data
 cp .env /opt/vnc-rm-app
 # Отредактируйте его по своему усмотрению
 # И разверните контейнер
-docker run \
+docker run -d \
   --name vnc-rm-app \
   --restart unless-stopped \
   --env-file /opt/vnc-rm-app/.env \
