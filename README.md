@@ -95,6 +95,8 @@ docker run \
 ### 3. Установка агента на хост
 
 ```bash
+# После клона репозитория
+cd VNC-Remote-Viewer
 cd agent
 # Настройте предварительно или после установки файл конфигурации
 nano agent/conf/config.yaml
