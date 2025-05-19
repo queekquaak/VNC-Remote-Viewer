@@ -2,8 +2,8 @@ version: '1.0'
 
 services:
   api-server:
-    image: vnc-rm-server                  # Название собранного Docker-образа
-    container_name: vnc_rm_server         # Фиксированное имя контейнера
+    image: queekquaak/vnc-rm-server:1.0   # Название собранного Docker-образа
+    container_name: vnc-rm-server         # Фиксированное имя контейнера
     restart: unless-stopped               # Автоперезапуск при падении
     ports:
       - "8080:8080"                   # Пробрасываем порт (host:container)
