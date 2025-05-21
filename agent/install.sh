@@ -75,7 +75,7 @@ case "$1" in
     echo -e "${RED}Error: Unknown pkg manager.\nUsing: sudo bash $0 [--apt | --dnf | --yum | --pacman | --zypper]${RESET}"
     echo "Use --custom if you want to install these dependencies by yourself:"
     echo "x11vnc, novnc (from snap), coreutils, make, automake, gcc, g++ (or gcc-c++), kernel, headers"
-    echo "websockify, openssl-dev, libffi-dev, python3-dev, python3-venv (or python3-virtualenv)"
+    echo "openssl-dev, libffi-dev, python3-dev, python3-venv (or python3-virtualenv)"
     exit 1
     ;;
 esac
