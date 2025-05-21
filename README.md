@@ -165,9 +165,8 @@ cd /opt/vnc-rm-agent
 
 ## 🐳 Зависимости
 
-- Docker, Docker Compose
-- Python 3.7+
-- x11vnc, websockify, noVNC, Snap (устанавливаются через агент)
+- Docker, Docker Compose (для серверов)
+- Python 3.7+ (для агентов)
 
 ## 📜 Лицензия
 
