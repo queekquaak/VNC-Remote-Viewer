@@ -58,8 +58,8 @@ cd api-server/
 docker build -t queekquaak/vnc-rm-server:1.0 .
 # Подготовьте директорию для монтирования
 mkdir -p /opt/vnc-rm-server/data
-# Создайте .env в /opt/vnc-rm-server
-cp .env /opt/vnc-rm-server
+# Используя шаблон, создайте .env в /opt/vnc-rm-server
+cp .env.example /opt/vnc-rm-server/.env
 # Отредактируйте его по своему усмотрению. Не забудьте указать свой токен валидации
 # И разверните контейнер
 docker run -d \
@@ -77,8 +77,8 @@ cd frontend-server/
 docker build -t queekquaak/vnc-rm-app:1.0 .
 # Подготовьте директорию для монтирования
 mkdir -p /opt/vnc-rm-app/data
-# Создайте .env в /opt/vnc-rm-app
-cp .env /opt/vnc-rm-app
+# Используя шаблон, создайте .env в /opt/vnc-rm-app
+cp .env.example /opt/vnc-rm-app/.env
 # Отредактируйте его по своему усмотрению
 # И разверните контейнер
 docker run -d \
