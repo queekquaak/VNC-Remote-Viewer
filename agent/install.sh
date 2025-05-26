@@ -81,12 +81,12 @@ case "$1" in
 esac
 
 # Checking pkg installation
-if ! command -v "$PKG_MANAGER" &> /dev/null; then
+if [ "$PKG_MANAGER" == "custom" ]; then
+  echo -e "${YELLOW}Skipping automatic dependency installation (custom mode)${RESET}"
+elif ! command -v "$PKG_MANAGER" &> /dev/null; then
   echo -e "${RED}Error: The specified package manager '$PKG_MANAGER' was not found in the system.${RESET}"
   echo -e "${YELLOW}Check the correctness or set dependencies manually.${RESET}"
   exit 1
-elif [ "$PKG_MANAGER" == "custom" ]; then
-  :
 else
   echo "Installing dependencies..."
   install_deps
