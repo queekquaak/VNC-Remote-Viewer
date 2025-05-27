@@ -12,6 +12,13 @@ app = Flask(
 API_BASE = f"http://{config.API_SERVER_ADDR}"
 
 
+def get_auth_headers():
+    return {
+        'Authorization': f'Bearer {config.API_AUTH_TOKEN}',
+        'Content-Type': 'application/json'
+    }
+
+
 @app.route('/')
 def index():
     cfg = config.to_dict()
@@ -35,7 +42,11 @@ def get_servers():
 @app.route('/api/servers/exclude', methods=['POST'])
 def exclude_server():
     try:
-        resp = requests.post(f"{API_BASE}/api/servers/exclude", json=request.json)
+        resp = requests.post(
+            f"{API_BASE}/api/servers/exclude",
+            json=request.json,
+            headers=get_auth_headers()
+        )
         return jsonify(resp.json() if resp.content else {"status": "ok"}), resp.status_code
     except requests.RequestException as e:
         return jsonify({"error": str(e)}), 500
@@ -44,7 +55,11 @@ def exclude_server():
 @app.route('/api/servers/include', methods=['POST'])
 def include_server():
     try:
-        resp = requests.post(f"{API_BASE}/api/servers/include", json=request.json)
+        resp = requests.post(
+            f"{API_BASE}/api/servers/include",
+            json=request.json,
+            headers=get_auth_headers()
+        )
         return jsonify(resp.json() if resp.content else {"status": "ok"}), resp.status_code
     except requests.RequestException as e:
         return jsonify({"error": str(e)}), 500
@@ -107,17 +122,14 @@ def handle_lists():
         if action == 'add':
             if list_name not in lists:
                 lists[list_name] = []
-            # Добавляем только отсутствующие серверы
             for server in servers:
                 if server not in lists[list_name]:
                     lists[list_name].append(server)
         elif action == 'remove':
             if list_name in lists:
                 if servers:
-                    # Удаляем только присутствующие серверы
                     lists[list_name] = [s for s in lists[list_name] if s not in servers]
                 else:
-                    # Удаляем весь список
                     del lists[list_name]
 
         config.save_lists(lists)
