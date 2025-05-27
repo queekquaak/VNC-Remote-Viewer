@@ -8,6 +8,9 @@ FRONTEND_PORT = os.getenv('FRONTEND_PORT', "5000")
 # The port of api-server
 API_SERVER_ADDR = os.getenv('API_SERVER_ADDR', "localhost:8080")
 
+# Token for API validations
+API_AUTH_TOKEN = os.getenv("API_AUTH_TOKEN", "moneyprintergobrrr")
+
 # VNC-server password for the view-only mode
 VIEW_ONLY_PASS = os.getenv('VIEW_ONLY_PASS', "password")
 
@@ -58,7 +61,7 @@ def to_dict() -> dict:
     for name, value in globals().items():
         if name.isupper():
             if isinstance(value, Path):
-                result[name] = str(value)  # Преобразуем Path в строку
+                result[name] = str(value)
             else:
                 result[name] = value
     return result
