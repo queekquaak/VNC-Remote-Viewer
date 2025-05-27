@@ -20,15 +20,15 @@ export async function excludeServers(ips) {
 
 export async function includeServers(ips) {
   try {
-  await Promise.all(ips.map(ip =>
-    fetch('/api/servers/include', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ip })
+    await Promise.all(ips.map(ip =>
+      fetch('/api/servers/include', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ip })
       })
     ));
   } catch (err) {
-    console.error("Error excluding servers:", err);
+    console.error("Error including servers:", err);
   }
 }
 
