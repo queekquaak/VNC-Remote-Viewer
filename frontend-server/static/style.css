@@ -91,9 +91,12 @@ header {
   gap: 10px;
 }
 
+/* Убрано правило .excluded для отключения серой окраски исключенных плиток */
+/*
 .excluded {
   opacity: 0.4;
 }
+*/
 
 .notification {
   background-color: #4CAF50;
