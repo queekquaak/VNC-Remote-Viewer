@@ -61,8 +61,10 @@ class ServerManager:
             servers.append(server_data)
             if self.repository.save_servers(servers):
                 self.metrics.increment("register_success")
+                self.logger.info(f"Server registered: {server_data.get('ip', 'unknown')}")
                 return True
             self.metrics.increment("register_failed")
+            self.logger.error(f"Failed to save server registration: {server_data.get('ip', 'unknown')}")
             return False
         except Exception as e:
             self.metrics.increment("register_error")
@@ -73,34 +75,63 @@ class ServerManager:
         """Исключение сервера по IP"""
         try:
             servers = self.repository.load_servers()
-            for s in servers:
-                if s["ip"] == ip:
-                    s["excluded"] = True
+            server_found = False
+            for server in servers:
+                if server["ip"] == ip:
+                    server["excluded"] = True
+                    server_found = True
+                    self.logger.info(f"Server marked as excluded: {ip}")
+                    break
+
+            if not server_found:
+                self.logger.warning(f"Server not found for exclusion: {ip}")
+                self.metrics.increment("exclude_not_found")
+                return False
+
             if self.repository.save_servers(servers):
                 self.metrics.increment("exclude_success")
                 return True
-            self.metrics.increment("exclude_failed")
-            return False
+            else:
+                self.metrics.increment("exclude_failed")
+                self.logger.error(f"Failed to save exclusion for server: {ip}")
+                return False
+
         except Exception as e:
             self.metrics.increment("exclude_error")
-            self.logger.error(f"Exclusion error: {e}")
+            self.logger.error(f"Exclusion error for {ip}: {e}")
             return False
 
     def include_server(self, ip: str) -> bool:
         """Включение сервера по IP"""
         try:
             servers = self.repository.load_servers()
-            for s in servers:
-                if s["ip"] == ip:
-                    s.pop("excluded", None)
+            server_found = False
+            for server in servers:
+                if server["ip"] == ip:
+                    if "excluded" in server:
+                        del server["excluded"]
+                        server_found = True
+                        self.logger.info(f"Server included back: {ip}")
+                    else:
+                        self.logger.info(f"Server was not excluded: {ip}")
+                        server_found = True
+                    break
+
+            if not server_found:
+                self.logger.warning(f"Server not found for inclusion: {ip}")
+                self.metrics.increment("include_not_found")
+                return False
             if self.repository.save_servers(servers):
                 self.metrics.increment("include_success")
                 return True
-            self.metrics.increment("include_failed")
-            return False
+            else:
+                self.metrics.increment("include_failed")
+                self.logger.error(f"Failed to save inclusion for server: {ip}")
+                return False
+
         except Exception as e:
             self.metrics.increment("include_error")
-            self.logger.error(f"Inclusion error: {e}")
+            self.logger.error(f"Inclusion error for {ip}: {e}")
             return False
 
     def get_servers(self, include_excluded: bool = False) -> List[Dict[str, Any]]:
@@ -110,11 +141,50 @@ class ServerManager:
             if not include_excluded:
                 servers = [s for s in servers if not s.get("excluded", False)]
             self.metrics.increment("get_servers_success")
+            self.logger.debug(f"Retrieved {len(servers)} servers (include_excluded={include_excluded})")
             return servers
         except Exception as e:
             self.metrics.increment("get_servers_error")
             self.logger.error(f"Get servers error: {e}")
             return []
+
+    def get_server_by_ip(self, ip: str) -> Optional[Dict[str, Any]]:
+        """Получение сервера по IP"""
+        try:
+            servers = self.repository.load_servers()
+            for server in servers:
+                if server["ip"] == ip:
+                    return server
+            return None
+        except Exception as e:
+            self.logger.error(f"Error getting server by IP {ip}: {e}")
+            return None
+
+    def remove_server(self, ip: str) -> bool:
+        """Полное удаление сервера по IP"""
+        try:
+            servers = self.repository.load_servers()
+            initial_count = len(servers)
+            servers = [s for s in servers if s["ip"] != ip]
+
+            if len(servers) == initial_count:
+                self.logger.warning(f"Server not found for removal: {ip}")
+                self.metrics.increment("remove_not_found")
+                return False
+
+            if self.repository.save_servers(servers):
+                self.metrics.increment("remove_success")
+                self.logger.info(f"Server removed: {ip}")
+                return True
+            else:
+                self.metrics.increment("remove_failed")
+                self.logger.error(f"Failed to save after server removal: {ip}")
+                return False
+
+        except Exception as e:
+            self.metrics.increment("remove_error")
+            self.logger.error(f"Remove server error for {ip}: {e}")
+            return False
 
 
 class ServerRequestHandler(BaseHTTPRequestHandler):
