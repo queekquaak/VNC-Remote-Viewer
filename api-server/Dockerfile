@@ -36,4 +36,4 @@ ENV PYTHONUNBUFFERED=1 \
 EXPOSE ${API_SERVER_PORT}
 
 # Команда для запуска приложения
-CMD ["python", "__main__.py"]
+ENTRYPOINT ["python", "__main__.py"]
