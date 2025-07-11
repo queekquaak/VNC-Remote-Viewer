@@ -34,4 +34,4 @@ ENV FRONTEND_PORT=5000 \
 EXPOSE ${FRONTEND_PORT}
 
 # Запускаем приложение
-CMD ["python", "__main__.py"]
+ENTRYPOINT ["python", "__main__.py"]
